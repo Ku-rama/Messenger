@@ -14,6 +14,12 @@ final class DatabaseManager{
     static let shared = DatabaseManager()
     
     private let database = Database.database().reference()
+    
+    static func safeEmail(emailAddress: String) -> String{
+        var safeEmail = emailAddress.replacingOccurrences(of: ".", with: "-")
+        safeEmail = safeEmail.replacingOccurrences(of: "@", with: "-")
+        return safeEmail
+    }
 }
 
 //MARK: - Account Management
@@ -34,8 +40,7 @@ extension DatabaseManager{
             completion(true)
         }
     }
-    
-    
+        
     /// Insert new user to Database
     public func insertUser(with user: ChatAppUser, completion: @escaping(Bool) -> Void){
         database.child(user.safeEmail).setValue([

@@ -74,6 +74,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         let lastName = user.profile.familyName else{
             return
         }
+        
+        UserDefaults.standard.set(email, forKey: "email")
+        
         DatabaseManager.shared.validateNewUser(with: email) { exist in
             if !exist{
                 //Insert to database

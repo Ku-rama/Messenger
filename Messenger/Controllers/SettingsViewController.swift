@@ -25,12 +25,32 @@ class SettingsViewController: UIViewController {
                            forCellReuseIdentifier: "cell")
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.tableHeaderView = createTableHeader()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         view.addSubview(tableView)
         tableView.frame = view.bounds
+    }
+    
+    func createTableHeader() -> UIView{
+        
+        let email = UserDefaults.standard.value(forKey: "email") as? String ?? ""
+        let safeEmail = DatabaseManager.safeEmail(emailAddress: email)
+        let fileName = safeEmail+"_profile_picture.png"
+        
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.width, height: 300))
+        headerView.backgroundColor = .link
+        let imageView = UIImageView(frame: CGRect(x: (headerView.width-150)/2, y: 75, width: 150, height: 150))
+        imageView.contentMode = .scaleAspectFill
+        imageView.backgroundColor = .white
+        imageView.layer.borderColor = UIColor.white.cgColor
+        imageView.layer.borderWidth = 3
+        imageView.layer.masksToBounds = true
+        headerView.addSubview(imageView)
+        return headerView
+        
     }
 }
 

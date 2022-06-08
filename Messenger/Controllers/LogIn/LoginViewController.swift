@@ -172,6 +172,9 @@ class LoginViewController: UIViewController {
                 print("Failed to sign in. \(String(describing: err))")
                 return
             }
+            
+            UserDefaults.standard.set(email, forKey: "email")
+            
             print("Successfully loggedin user", result)
             strongSelf.navigationController?.dismiss(animated: true)
         }
@@ -226,6 +229,8 @@ extension LoginViewController: LoginButtonDelegate{
             
             print(result)
             
+            UserDefaults.standard.set(email, forKey: "email")
+            
             DatabaseManager.shared.validateNewUser(with: email) { exists in
                 if !exists{
                     let chatUser = ChatAppUser(firstName: firstName, lastName: lastName, emailAddress: email)
@@ -270,6 +275,7 @@ extension LoginViewController: LoginButtonDelegate{
                     print("Facebook login credentials fail, MFA")
                     return
                 }
+                
                 print("Successfully logged user in")
                 strongSelf.navigationController?.dismiss(animated: true, completion: nil)
             }

@@ -39,4 +39,6 @@ final class StorageMamager{
         case failedToUpload
         case failedToDownloadUrl
     }
+    
+    
 }
