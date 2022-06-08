@@ -7,8 +7,11 @@
 
 import UIKit
 import Firebase
+import JGProgressHUD
 
 class RegisterViewController: UIViewController {
+    
+    private let spinner = JGProgressHUD(style: .dark)
     
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -168,6 +171,8 @@ class RegisterViewController: UIViewController {
             return
         }
         
+        spinner.show(in: view)
+        
         DatabaseManager.shared.validateNewUser(with: email) { exists in
             
             guard exists else{
@@ -181,6 +186,11 @@ class RegisterViewController: UIViewController {
                 guard let strongSelf = self else{
                     return
                 }
+                
+                DispatchQueue.main.async {
+                    strongSelf.spinner.dismiss(animated: true)
+                }
+                
                 guard authResult != nil, err == nil else{
                     print("Error creating User")
                     return

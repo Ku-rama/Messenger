@@ -25,6 +25,7 @@
 		BA0730902847B3D200098D29 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA07308F2847B3D200098D29 /* ProfileViewController.swift */; };
 		BA0730932847BE7100098D29 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0730922847BE7100098D29 /* Extensions.swift */; };
 		BA0730952847DE7400098D29 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BA0730942847DE7400098D29 /* GoogleService-Info.plist */; };
+		BA3F4CAF28505C32006B4072 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3F4CAE28505C32006B4072 /* ChatViewController.swift */; };
 		BA6180B5284906B400F23E8F /* MainTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6180B4284906B400F23E8F /* MainTabBarViewController.swift */; };
 		BA6180B72849083300F23E8F /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6180B62849083300F23E8F /* SettingsViewController.swift */; };
 		BA7AE0C72848AC8100DEE572 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7AE0C62848AC8100DEE572 /* DatabaseManager.swift */; };
@@ -77,6 +78,7 @@
 		BA07308F2847B3D200098D29 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		BA0730922847BE7100098D29 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		BA0730942847DE7400098D29 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		BA3F4CAE28505C32006B4072 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		BA6180B4284906B400F23E8F /* MainTabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarViewController.swift; sourceTree = "<group>"; };
 		BA6180B62849083300F23E8F /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		BA7AE0C62848AC8100DEE572 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
@@ -168,6 +170,7 @@
 			isa = PBXGroup;
 			children = (
 				BA0730532847A60F00098D29 /* ConversationsViewController.swift */,
+				BA3F4CAE28505C32006B4072 /* ChatViewController.swift */,
 				BA0730912847B61E00098D29 /* LogIn */,
 				BA0730892847B3A300098D29 /* PhotoViewrViewController.swift */,
 				BA07308B2847B3AF00098D29 /* VideoPlayerViewController.swift */,
@@ -538,6 +541,7 @@
 				BA0730932847BE7100098D29 /* Extensions.swift in Sources */,
 				BA07308A2847B3A300098D29 /* PhotoViewrViewController.swift in Sources */,
 				BA0730902847B3D200098D29 /* ProfileViewController.swift in Sources */,
+				BA3F4CAF28505C32006B4072 /* ChatViewController.swift in Sources */,
 				BA6180B72849083300F23E8F /* SettingsViewController.swift in Sources */,
 				BA0730502847A60F00098D29 /* AppDelegate.swift in Sources */,
 				BA0730522847A60F00098D29 /* SceneDelegate.swift in Sources */,

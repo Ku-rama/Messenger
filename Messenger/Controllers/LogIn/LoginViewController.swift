@@ -10,8 +10,11 @@ import Firebase
 import FBSDKLoginKit
 import FBSDKCoreKit
 import GoogleSignIn
+import JGProgressHUD
 
 class LoginViewController: UIViewController {
+    
+    private let spinner = JGProgressHUD(style: .dark)
     
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -148,6 +151,7 @@ class LoginViewController: UIViewController {
     
     
     @objc func loginButtonTapped(){
+        spinner.show(in: view)
         emailTextField.resignFirstResponder()
         passwordTextField.resignFirstResponder()
         guard let email = emailTextField.text, let password = passwordTextField.text, !email.isEmpty, !password.isEmpty, password.count >= 6 else{
@@ -159,6 +163,11 @@ class LoginViewController: UIViewController {
             guard let strongSelf = self else{
                 return
             }
+            
+            DispatchQueue.main.async {
+                strongSelf.spinner.dismiss(animated: true)
+            }
+            
             guard let result = authResult, err == nil else{
                 print("Failed to sign in. \(String(describing: err))")
                 return
