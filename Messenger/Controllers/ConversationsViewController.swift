@@ -25,7 +25,8 @@ class ConversationsViewController: UIViewController {
         if let token = AccessToken.current,
            !token.isExpired{
             // User is logged in, do work such as go to next view controller.
-            print("User is loggged in")
+            print("User is loggged in with facebook")
+            
         }
         validateAuth()
     }
