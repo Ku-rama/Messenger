@@ -12,6 +12,12 @@ import GoogleSignIn
 
 class ConversationsViewController: UIViewController {
     
+    private let tableView: UITableView = {
+        let table = UITableView()
+        table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        return table
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -38,7 +44,6 @@ class ConversationsViewController: UIViewController {
             nav.modalPresentationStyle = .fullScreen
             present(nav, animated: false)
         }
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
