@@ -211,7 +211,7 @@ extension LoginViewController: LoginButtonDelegate{
             return
         }
         
-        let facebookRequest = FBSDKLoginKit.GraphRequest(graphPath: "me", parameters: ["fields": "email, name"] , tokenString: token, version: "v14.0", httpMethod: HTTPMethod.get)
+        let facebookRequest = FBSDKLoginKit.GraphRequest(graphPath: "me", parameters: ["fields": "email, first_name, last_name, picture.type(large)"] , tokenString: token, version: "v14.0", httpMethod: HTTPMethod.get)
         
         facebookRequest.start { _, result, error in
             guard let result = result as? [String: Any], error == nil else{
@@ -219,23 +219,43 @@ extension LoginViewController: LoginButtonDelegate{
                 return
             }
             
-            guard let userName = result["name"] as? String, let email = result["email"] as? String else{
+            guard let firstName = result["first_name"] as? String, let lastName = result["last_name"] as? String, let email = result["email"] as? String, let picture = result["picture"] as? [String: Any], let data = picture["data"] as? [String: Any], let pictureUrl = data["url"] as? String else{
                 print("Failed to ger username and email")
                 return
             }
             
-            let nameComponets = userName.components(separatedBy: " ")
-            guard nameComponets.count == 2 else{
-                return
-            }
-            
-            let firstName = nameComponets[0]
-            let lastName = nameComponets[1]
-            
+            print(result)
             
             DatabaseManager.shared.validateNewUser(with: email) { exists in
                 if !exists{
-                    DatabaseManager.shared.insertUser(with: ChatAppUser(firstName: firstName, lastName: lastName, emailAddress: email))
+                    let chatUser = ChatAppUser(firstName: firstName, lastName: lastName, emailAddress: email)
+                    DatabaseManager.shared.insertUser(with: chatUser) { success in
+                        if success{
+                            
+                            guard let url = URL(string: pictureUrl) else{
+                                return
+                            }
+                            print("Downloding data from facebook.")
+                            
+                            URLSession.shared.dataTask(with: url) { data, _, error in
+                                guard let data = data else{
+                                    print("Failed to get data from facebook.")
+                                    return
+                                }
+                                print("Got data from facebook, Uploding.")
+                                let fileName = chatUser.profilePictureFileName
+                                StorageMamager.shared.uploadProfilePicture(with: data, fileName: fileName) { results in
+                                    switch results{
+                                    case .success(let downloadUrl):
+                                        UserDefaults.standard.set(downloadUrl, forKey: "profile_picture_url")
+                                        print(downloadUrl)
+                                    case .failure(let error):
+                                        print("storage Manager Error: \(error)")
+                                    }
+                                }
+                            }.resume()
+                        }
+                    }
                 }
             }
             
@@ -253,16 +273,11 @@ extension LoginViewController: LoginButtonDelegate{
                 print("Successfully logged user in")
                 strongSelf.navigationController?.dismiss(animated: true, completion: nil)
             }
-            
         }
-        
-        
     }
     
     func loginButtonDidLogOut(_ loginButton: FBLoginButton) {
         // Do nothing right now
         print("user has been logged out.")
     }
-    
-    
 }

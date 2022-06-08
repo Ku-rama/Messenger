@@ -171,11 +171,11 @@ class RegisterViewController: UIViewController {
             return
         }
         
-        spinner.show(in: view)
+//        spinner.show(in: view)
         
         DatabaseManager.shared.validateNewUser(with: email) { exists in
             
-            guard exists else{
+            guard !exists else{
                 //User alredy exists
                 
                 self.alertUserSignUpError(message: "Looks like user account for this email address already exist.")
@@ -187,17 +187,36 @@ class RegisterViewController: UIViewController {
                     return
                 }
                 
-                DispatchQueue.main.async {
-                    strongSelf.spinner.dismiss(animated: true)
-                }
+//                DispatchQueue.main.async {
+//                    strongSelf.spinner.dismiss(animated: true)
+//                }
                 
                 guard authResult != nil, err == nil else{
                     print("Error creating User")
                     return
                 }
-                DatabaseManager.shared.insertUser(with: ChatAppUser(firstName: firstName,
-                                                                    lastName: lastName,
-                                                                    emailAddress: email))
+                let chatUser = ChatAppUser(firstName: firstName,
+                                           lastName: lastName,
+                                           emailAddress: email)
+                DatabaseManager.shared.insertUser(with: chatUser) { success in
+                    if success{
+                        // Upload Image
+                        
+                        guard let image = strongSelf.logoImageView.image, let data = image.pngData() else{
+                            return
+                        }
+                        let fileName = chatUser.profilePictureFileName
+                        StorageMamager.shared.uploadProfilePicture(with: data, fileName: fileName) { results in
+                            switch results{
+                            case .success(let downloadUrl):
+                                UserDefaults.standard.set(downloadUrl, forKey: "profile_picture_url")
+                                print(downloadUrl)
+                            case .failure(let error):
+                                print("storage Manager Error: \(error)")
+                            }
+                        }
+                    }
+                }
                 strongSelf.navigationController?.dismiss(animated: true)
             }
         }
