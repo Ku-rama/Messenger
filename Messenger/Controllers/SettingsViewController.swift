@@ -9,6 +9,7 @@ import UIKit
 import Firebase
 import FBSDKLoginKit
 import GoogleSignIn
+import MapKit
 
 class SettingsViewController: UIViewController {
     
@@ -39,6 +40,8 @@ class SettingsViewController: UIViewController {
         let email = UserDefaults.standard.value(forKey: "email") as? String ?? ""
         let safeEmail = DatabaseManager.safeEmail(emailAddress: email)
         let fileName = safeEmail+"_profile_picture.png"
+        let path = "images/"+fileName
+        print(path)
         
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.width, height: 300))
         headerView.backgroundColor = .link
@@ -48,9 +51,30 @@ class SettingsViewController: UIViewController {
         imageView.layer.borderColor = UIColor.white.cgColor
         imageView.layer.borderWidth = 3
         imageView.layer.masksToBounds = true
+        imageView.layer.cornerRadius = (imageView.width)/2
         headerView.addSubview(imageView)
-        return headerView
         
+        StorageMamager.shared.downloadUrl(for: path) { result in
+            switch result{
+            case .success(let url):
+                self.downloadImage(imageView: imageView, url: url)
+            case .failure(let err):
+                print("Failed to get download url: \(err)")
+            }
+        }
+        return headerView
+    }
+    
+    func downloadImage(imageView: UIImageView, url: URL){
+        URLSession.shared.dataTask(with: url) { data, _, error in
+            guard let data = data, error == nil else{
+                return
+            }
+            DispatchQueue.main.async {
+                let image = UIImage(data: data)
+                imageView.image = image
+            }
+        }.resume()
     }
 }
 

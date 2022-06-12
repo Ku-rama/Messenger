@@ -7,6 +7,7 @@
 
 import Foundation
 import FirebaseStorage
+import SwiftUI
 
 final class StorageMamager{
     static let shared = StorageMamager()
@@ -40,5 +41,14 @@ final class StorageMamager{
         case failedToDownloadUrl
     }
     
-    
+    public func downloadUrl(for path: String, completion: @escaping (Result<URL, Error>) -> Void){
+        let refrence = storage.child(path)
+        refrence.downloadURL { url, error in
+            guard let url = url, error == nil else{
+                completion(.failure(StorageErrors.failedToUpload))
+                return
+            }
+            completion(.success(url))
+        }
+    }
 }
